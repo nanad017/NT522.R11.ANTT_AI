@@ -1,0 +1,17 @@
+androguard==4.1.4
+gensim==4.4.0
+networkx==3.7
+numpy==2.5.4
+psutil>=7.1,<8
+pyarrow==26.0.0
+pydantic==2.14.3
+pyyaml>=6.0.1,<7
+safetensors==0.6.2
+scikit-learn==1.9.1
+scipy==1.18.1
+skops==0.13.0
+torch==2.12.1
+torch-geometric==2.8.0
+typer>=0.20,<1
+xgboost==3.4.1
+zstandard==0.25.0

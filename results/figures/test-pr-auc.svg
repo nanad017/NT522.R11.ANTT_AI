@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500" viewBox="0 0 900 500">
+  <rect width="900" height="500" fill="white"/>
+  <text x="450" y="40" text-anchor="middle" font-family="sans-serif" font-size="24" font-weight="bold">Temporal test PR-AUC (mean over 3 seeds)</text>
+  <line x1="190" y1="65" x2="190" y2="440" stroke="#333"/>
+  <line x1="190" y1="440" x2="850" y2="440" stroke="#333"/>
+  <g font-family="sans-serif" font-size="16" text-anchor="end">
+    <text x="180" y="104">Linear SVM</text><text x="180" y="164">Random Forest</text>
+    <text x="180" y="224">XGBoost</text><text x="180" y="284">GCN</text>
+    <text x="180" y="344">GAT</text><text x="180" y="404">GIN</text>
+  </g>
+  <g fill="#4472c4">
+    <rect x="190" y="80" width="535" height="32"/><rect x="190" y="140" width="569" height="32"/>
+    <rect x="190" y="200" width="551" height="32"/><rect x="190" y="260" width="549" height="32"/>
+    <rect x="190" y="320" width="537" height="32"/><rect x="190" y="380" width="525" height="32"/>
+  </g>
+  <g font-family="sans-serif" font-size="15">
+    <text x="735" y="102">0.8102</text><text x="769" y="162" font-weight="bold">0.8620</text>
+    <text x="751" y="222">0.8342</text><text x="749" y="282">0.8319</text>
+    <text x="737" y="342">0.8144</text><text x="725" y="402">0.7957</text>
+  </g>
+  <g font-family="sans-serif" font-size="14" text-anchor="middle">
+    <text x="190" y="465">0.0</text><text x="355" y="465">0.25</text>
+    <text x="520" y="465">0.50</text><text x="685" y="465">0.75</text><text x="850" y="465">1.0</text>
+  </g>
+</svg>

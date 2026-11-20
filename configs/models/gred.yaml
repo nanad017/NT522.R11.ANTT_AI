@@ -1,0 +1,9 @@
+data:
+  manifest: data/raw/final-manifest.csv
+  artifact_roots: [data/processed]
+  catalog: data/processed/metadata/catalog.parquet
+gred:
+  fidelity: structural_approximation
+  model_name: gred_approx_v1
+  watermark: NOT_PAPER_FAITHFUL
+  radius: 2

@@ -1,0 +1,8 @@
+data:
+  manifest: data/raw/final-manifest.csv
+  artifact_roots: [data/processed]
+  catalog: data/processed/metadata/catalog.parquet
+sigdroid:
+  fidelity: structural_approximation
+  model_name: sigdroid_proxy_v1
+  watermark: NOT_SIGDROID_FAITHFUL

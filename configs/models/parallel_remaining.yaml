@@ -1,0 +1,39 @@
+data:
+  manifest: data/raw/final-manifest.csv
+  artifact_roots: [data/processed]
+  catalog: data/processed/metadata/catalog.parquet
+gates:
+  expected_samples: 10000
+  required_views: [classical, fcg]
+  minimum_usable_fraction: 0.98
+  require_exclusion_manifest: true
+  scan_graph_quality: true
+seeds: [13, 42, 2026]
+classical:
+  matrix_dir: data/processed/metadata/classical-features
+  linear_svm:
+    C: 0.01
+    class_weight: null
+    dual: auto
+    tol: 0.0001
+    max_iter: 20000
+    scaling: max_abs
+common_gnn:
+  device: cpu
+  # Three GIN seeds run concurrently. Together with the already-running GAT,
+  # this keeps the 48-vCPU host busy without giving every process 40 threads.
+  torch_num_threads: 12
+  hidden_dim: 64
+  layers: 2
+  dropout: 0.2
+  heads: 2
+  train_eps: true
+  add_self_loops: true
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  epochs: 50
+  patience: 8
+  gradient_clip: 2.0
+  max_nodes_per_batch: 50000
+  max_edges_per_batch: 200000
+  num_workers: 0

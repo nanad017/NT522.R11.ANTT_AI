@@ -1,0 +1,14 @@
+data:
+  manifest: data/raw/final-manifest.csv
+  artifact_roots:
+    - data/processed
+  catalog: data/processed/metadata/catalog.parquet
+gates:
+  expected_samples: 10000
+  require_remote_verified: true
+  require_full_cohort_for_benchmark: true
+  scan_graph_quality: true
+  required_views: [classical, fcg]
+  minimum_usable_fraction: 0.98
+  allowed_analysis_status: [ok, partial]
+seeds: [13, 42, 2026]

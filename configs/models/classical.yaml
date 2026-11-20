@@ -1,0 +1,32 @@
+data:
+  manifest: data/raw/final-manifest.csv
+  artifact_roots: [data/processed]
+  catalog: data/processed/metadata/catalog.parquet
+seeds: [13, 42, 2026]
+classical:
+  matrix_dir: data/processed/metadata/classical-features
+  linear_svm:
+    C: 0.1
+    class_weight: null
+    max_iter: 10000
+    scaling: max_abs
+  random_forest:
+    n_estimators: 300
+    max_depth: 40
+    min_samples_leaf: 2
+    max_features: sqrt
+    n_jobs: 16
+    max_ram_gib: 8
+  xgboost:
+    n_estimators: 500
+    max_depth: 6
+    learning_rate: 0.05
+    min_child_weight: 1
+    subsample: 0.9
+    colsample_bytree: 0.9
+    reg_alpha: 0
+    reg_lambda: 1
+    tree_method: hist
+    device: cpu
+    early_stopping_rounds: 30
+    n_jobs: 32

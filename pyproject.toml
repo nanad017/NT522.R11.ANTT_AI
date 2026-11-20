@@ -1,0 +1,57 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "android-malware-detection-report"
+version = "0.1.0"
+description = "Reproducible temporal Android malware detection experiments"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "androguard==4.1.4",
+  "networkx==3.7",
+  "numpy==2.5.4",
+  "psutil>=7.1,<8",
+  "pyarrow==26.0.0",
+  "pydantic==2.14.3",
+  "pyyaml>=6.0.1,<7",
+  "scipy==1.18.1",
+  "typer>=0.20,<1",
+  "zstandard==0.25.0",
+]
+
+[project.optional-dependencies]
+classical = ["scikit-learn==1.9.1", "skops==0.13.0", "xgboost==3.4.1"]
+gnn = ["safetensors==0.6.2", "torch==2.12.1", "torch-geometric==2.8.0"]
+anakin = ["gensim==4.4.0"]
+dev = ["pytest>=8.4,<9", "pytest-cov>=7,<8", "ruff>=0.14,<1"]
+
+[project.scripts]
+android-pipeline = "android_pipeline.cli:app"
+android-models = "android_models.cli:app"
+
+[tool.hatch.build.targets.wheel]
+packages = [
+  "src/android_pipeline",
+  "src/android_models",
+  "src/datasets",
+  "src/models",
+  "src/engine",
+  "src/utils",
+]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cpu" }
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
