@@ -83,8 +83,10 @@ def confusion_svg(path: Path, model: str, seed: int, matrix: dict) -> None:
     path.write_text(svg)
 
 
-def run_row(model: str, seed: int, run_id: str, destination: Path) -> dict:
-    source = SOURCE / run_id
+def run_row(
+    model: str, seed: int, run_id: str, destination: Path, *, source_root: Path = SOURCE
+) -> dict:
+    source = source_root / run_id
     run = json.loads((source / "run.json").read_text())
     if run.get("status") != "complete":
         raise RuntimeError(f"selected run is not complete: {run_id}")

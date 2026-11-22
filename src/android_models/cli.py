@@ -229,8 +229,8 @@ def train_common_gnn_command(
     dry_run: Annotated[bool, typer.Option("--dry-run")] = False,
 ) -> None:
     config = load_config(config_path)
-    _, _, catalog = _data(config)
-    rows = load_catalog(catalog)
+    _, roots, catalog = _data(config)
+    rows = load_catalog(catalog, artifact_root=roots[0] if len(roots) == 1 else None)
     destination = _resolve(config, output)
     settings = config.get("common_gnn", {})
     if dry_run:

@@ -115,16 +115,18 @@ def train_common_gnn(
     max_nodes = int(config.get("max_nodes_per_batch", 50_000))
     max_edges = int(config.get("max_edges_per_batch", 200_000))
     workers = int(config.get("num_workers", 0))
+    output_path = Path(output)
+    write_json_atomic(output_path / "progress.json", {"status": "preparing_batches"})
     loaders = {
         split: _loader(
-            dataset,
+            datasets[split],
             max_nodes,
             max_edges,
             shuffle=split == "train",
             seed=seed,
             num_workers=workers,
         )
-        for split, dataset in datasets.items()
+        for split in ("train", "validation")
     }
     epochs = int(config.get("epochs", 50))
     patience = int(config.get("patience", 8))
@@ -135,12 +137,11 @@ def train_common_gnn(
     history: list[dict[str, Any]] = []
     stale = 0
     started = time.perf_counter()
-    output_path = Path(output)
-    output_path.mkdir(parents=True, exist_ok=True)
     for epoch in range(epochs):
         model.train()
         total_loss = 0.0
         total_graphs = 0
+        last_progress = -np.inf
         for batch in loaders["train"]:
             optimizer.zero_grad(set_to_none=True)
             logits = _forward(model, batch, device)
@@ -153,6 +154,22 @@ def train_common_gnn(
             optimizer.step()
             total_loss += float(loss.detach()) * targets.numel()
             total_graphs += targets.numel()
+            now = time.perf_counter()
+            if now - last_progress >= 60:
+                write_json_atomic(
+                    output_path / "progress.json",
+                    {
+                        "status": "training",
+                        "epoch": epoch,
+                        "epochs_configured": epochs,
+                        "train_graphs_processed": total_graphs,
+                        "train_graphs_total": len(datasets["train"]),
+                        "best_epoch": best_epoch,
+                        "best_validation_pr_auc": best_ap if best_epoch >= 0 else None,
+                        "elapsed_seconds": now - started,
+                    },
+                )
+                last_progress = now
         _, validation_logits, validation_y = _predict(model, loaders["validation"], device)
         validation_probability = 1.0 / (1.0 + np.exp(-validation_logits))
         ap = float(average_precision_score(validation_y, validation_probability))
@@ -224,14 +241,21 @@ def train_common_gnn(
     )
     split_values: dict[str, tuple[np.ndarray, np.ndarray]] = {}
     split_meta: dict[str, list[dict[str, Any]]] = {}
-    for split, loader in loaders.items():
-        metadata, logits, labels = _predict(reloaded, loader, device)
+    for split in ("train", "validation"):
+        metadata, logits, labels = _predict(reloaded, loaders[split], device)
         split_values[split] = (logits, labels)
         split_meta[split] = metadata
     validation_logits, validation_y = split_values["validation"]
     validation_probability = 1.0 / (1.0 + np.exp(-validation_logits))
     threshold = choose_threshold(validation_y, validation_probability)
     write_json_atomic(output_path / "threshold.json", threshold)
+    write_json_atomic(
+        output_path / "progress.json", {"status": "testing", "best_epoch": best_epoch}
+    )
+    test_loader = _loader(datasets["test"], max_nodes, max_edges, False, seed, workers)
+    test_meta, test_logits, test_labels = _predict(reloaded, test_loader, device)
+    split_values["test"] = (test_logits, test_labels)
+    split_meta["test"] = test_meta
     metrics: dict[str, Any] = {}
     for split in ("train", "validation", "test"):
         logits, labels = split_values[split]

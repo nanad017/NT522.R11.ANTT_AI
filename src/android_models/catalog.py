@@ -167,12 +167,20 @@ def build_catalog(
     return report
 
 
-def load_catalog(path: str | Path) -> list[dict[str, Any]]:
+def load_catalog(
+    path: str | Path, *, artifact_root: str | Path | None = None
+) -> list[dict[str, Any]]:
     rows = pq.read_table(path).to_pylist()
+    root = Path(artifact_root).resolve() if artifact_root is not None else None
     seen: set[str] = set()
     for row in rows:
         sha = normalize_sha(row["apk_sha256"])
         if sha in seen:
             raise ContractError(f"duplicate catalog SHA: {sha}")
         seen.add(sha)
+        if root is not None:
+            for view in ("classical", *VIEW_PATTERNS):
+                key = f"{view}_path"
+                if row.get(key) and not Path(row[key]).is_absolute():
+                    row[key] = str(root / row[key])
     return rows

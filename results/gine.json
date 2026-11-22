@@ -1,0 +1,102 @@
+{
+  "coverage": {
+    "test": 903,
+    "train": 8368,
+    "validation": 584
+  },
+  "runs": [
+    {
+      "best_epoch": 9,
+      "checkpoint": "experiments/gine/seed_13/checkpoints",
+      "completed_at": "2026-11-20T17:35:45.823159+00:00",
+      "created_at": "2026-11-20T09:02:20.299931+00:00",
+      "fn": 208,
+      "fp": 15,
+      "model": "gine",
+      "run_id": "train-gine-fcg-seed-13-b3c4e1cfaf22",
+      "runtime_seconds": 30269.67329582502,
+      "seed": 13,
+      "status": "complete",
+      "test_f1": 0.651017214397496,
+      "test_mcc": 0.5423273430450969,
+      "test_n": 903,
+      "test_pr_auc": 0.7694133859532284,
+      "test_precision": 0.9327354260089686,
+      "test_recall": 0.5,
+      "test_roc_auc": 0.7797716592955299,
+      "test_specificity": 0.9691991786447639,
+      "threshold": 0.9999010769481296,
+      "tn": 472,
+      "tp": 208,
+      "validation_pr_auc": 0.982878710647355
+    },
+    {
+      "best_epoch": 0,
+      "checkpoint": "experiments/gine/seed_42/checkpoints",
+      "completed_at": "2026-11-20T13:46:28.724766+00:00",
+      "created_at": "2026-11-20T09:02:20.188982+00:00",
+      "fn": 221,
+      "fp": 8,
+      "model": "gine",
+      "run_id": "train-gine-fcg-seed-42-b3c4e1cfaf22",
+      "runtime_seconds": 16509.042151615024,
+      "seed": 42,
+      "status": "complete",
+      "test_f1": 0.630048465266559,
+      "test_mcc": 0.540085699369776,
+      "test_n": 903,
+      "test_pr_auc": 0.7813031958174048,
+      "test_precision": 0.9605911330049262,
+      "test_recall": 0.46875,
+      "test_roc_auc": 0.7801862857368504,
+      "test_specificity": 0.9835728952772074,
+      "threshold": 0.9989222643753566,
+      "tn": 479,
+      "tp": 195,
+      "validation_pr_auc": 0.98264515518654
+    },
+    {
+      "best_epoch": 9,
+      "checkpoint": "experiments/gine/seed_2026/checkpoints",
+      "completed_at": "2026-11-20T17:27:41.480781+00:00",
+      "created_at": "2026-11-20T09:02:20.209183+00:00",
+      "fn": 122,
+      "fp": 100,
+      "model": "gine",
+      "run_id": "train-gine-fcg-seed-2026-b3c4e1cfaf22",
+      "runtime_seconds": 29780.242351909867,
+      "seed": 2026,
+      "status": "complete",
+      "test_f1": 0.725925925925926,
+      "test_mcc": 0.5039431074380001,
+      "test_n": 903,
+      "test_pr_auc": 0.8458646694864467,
+      "test_precision": 0.7461928934010152,
+      "test_recall": 0.7067307692307693,
+      "test_roc_auc": 0.8368568354130469,
+      "test_specificity": 0.7946611909650924,
+      "threshold": 0.5209717200809454,
+      "tn": 387,
+      "tp": 294,
+      "validation_pr_auc": 0.9881999496054248
+    }
+  ],
+  "summary": {
+    "test_f1": [
+      0.668997201863327,
+      0.04115484440966575
+    ],
+    "test_mcc": [
+      0.528785383284291,
+      0.01758996387165483
+    ],
+    "test_pr_auc": [
+      0.7988604170856933,
+      0.03358959861293239
+    ],
+    "test_roc_auc": [
+      0.7989382601484758,
+      0.026813016010172747
+    ]
+  }
+}

@@ -3,9 +3,11 @@ from __future__ import annotations
 import csv
 from pathlib import Path
 
+import pyarrow as pa
+import pyarrow.parquet as pq
 import pytest
 
-from android_models.catalog import read_manifest
+from android_models.catalog import load_catalog, read_manifest
 from android_models.contracts import (
     ContractError,
     enforce_fidelity,
@@ -37,4 +39,16 @@ def test_manifest_duplicate_conflict_fails(tmp_path: Path) -> None:
         writer.writerow({"sha256": "1" * 64, "label": "malware", "split": "test", "year": 2023})
     with pytest.raises(ContractError):
         read_manifest(path)
+
+
+def test_catalog_resolves_relative_artifact_paths(tmp_path: Path) -> None:
+    catalog = tmp_path / "catalog.parquet"
+    root = tmp_path / "processed"
+    absolute = str(tmp_path / "legacy.json")
+    row = {"apk_sha256": "a" * 64, "fcg_path": "train/graph.npz", "classical_path": absolute}
+    pq.write_table(pa.Table.from_pylist([row]), catalog)
+    assert load_catalog(catalog) == [row]
+    assert load_catalog(catalog, artifact_root=root) == [
+        {**row, "fcg_path": str(root / "train/graph.npz")}
+    ]
 
